@@ -1,0 +1,20 @@
+{
+  "name": "unicus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd server && npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philliptvo/Unicus.git"
+  },
+  "author": "Phillip Vo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/philliptvo/Unicus/issues"
+  },
+  "homepage": "https://github.com/philliptvo/Unicus#readme"
+}
