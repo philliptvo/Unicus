@@ -34,6 +34,23 @@ server.use(passport.initialize());
 Passport(passport);
 
 // Routes
+
+// DEBUG
+server.get("/userlist", (req, res) => {
+  User.find({}).then((users) => {
+    return res.status(200).json(users);
+  });
+});
+
+server.delete("/userlist/:id", (req, res) => {
+  User.findByIdAndRemove(req.params.id, (err) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(204).json({ User: "User deleted succesfully" });
+  });
+});
+
 // server.use((req, res, next) => console.log(req, res));
 server.use("/api/users", UsersRouter);
 

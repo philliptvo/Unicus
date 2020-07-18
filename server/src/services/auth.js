@@ -2,7 +2,6 @@ import { body } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import keys from "../config/keys";
 import User from "../models/user";
 
 export function validateAuthInput(method) {
@@ -56,6 +55,7 @@ export function loginUser(req, res) {
     if (!user) {
       return res.status(400).json({ email: "Email not found" });
     }
+
     bcrypt.compare(req.body.password, user.password).then((isMatch) => {
       if (isMatch) {
         // Create JWT payload on match
@@ -66,7 +66,7 @@ export function loginUser(req, res) {
 
         jwt.sign(
           payload,
-          keys.secretOrKey,
+          process.env.SECRET,
           { expiresIn: 60 * 60 },
           (err, token) => {
             res.status(200).json({ success: true, token: "Βearer " + token });
