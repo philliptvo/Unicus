@@ -2,8 +2,8 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 
-import User from '../models/user';
 import { ErrorHandler } from '../middlewares/error';
+import User from '../models/user';
 import RefreshToken from '../models/refreshToken';
 
 const register = async (params) => {
@@ -88,7 +88,7 @@ const hash = (password) => {
 
 const getRefreshToken = async (token) => {
   const foundToken = await RefreshToken.findOne({ token }).populate('user');
-  if (!foundToken || !foundToken.isActive) throw new ErrorHandler(400, 'Invalid refresh token');
+  if (!foundToken || !foundToken.isActive) throw new ErrorHandler(403, 'Invalid refresh token');
   return foundToken;
 };
 
@@ -97,26 +97,26 @@ const generateJwtToken = (user) => {
   return `Bearer ${token}`;
 };
 
-const generateRefreshToken = (user) => new RefreshToken({
-  user: user.id,
-  token: randomTokenString(),
-  expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-});
+const generateRefreshToken = (user) =>
+  new RefreshToken({
+    user: user.id,
+    token: randomTokenString(),
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  });
 
 const randomTokenString = () => crypto.randomBytes(40).toString('hex');
 
 const userInfo = (user) => {
-  const {
-    id, firstName, lastName, email, role, created, updated
-  } = user;
+  const { id, firstName, lastName, email, role, created, updated } = user;
   return {
-    id, firstName, lastName, email, role, created, updated
+    id,
+    firstName,
+    lastName,
+    email,
+    role,
+    created,
+    updated,
   };
 };
 
-export {
-  register,
-  login,
-  refreshToken,
-  revokeToken,
-};
+export { register, login, refreshToken, revokeToken };

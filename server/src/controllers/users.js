@@ -8,7 +8,7 @@ const getAll = async () => {
 
 const getById = async (userId) => {
   const user = await getAccount(userId);
-  return user;
+  return userInfo(user);
 };
 
 const updateById = async (userId, params) => {
@@ -18,12 +18,14 @@ const updateById = async (userId, params) => {
   user.updated = Date.now();
   await user.save();
 
-  return user;
+  return userInfo(user);
 };
 
 const deleteById = async (userId) => {
   const user = await getAccount(userId);
   await user.remove();
+
+  return userInfo(user);
 };
 
 // Helper functions
@@ -33,9 +35,17 @@ const getAccount = async (id) => {
   return account;
 };
 
-export {
-  getAll,
-  getById,
-  updateById,
-  deleteById
+const userInfo = (user) => {
+  const { id, firstName, lastName, email, role, created, updated } = user;
+  return {
+    id,
+    firstName,
+    lastName,
+    email,
+    role,
+    created,
+    updated,
+  };
 };
+
+export { getAll, getById, updateById, deleteById };

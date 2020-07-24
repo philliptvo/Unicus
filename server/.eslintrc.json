@@ -4,11 +4,8 @@
         "es2020": true
     },
     "extends": [
-        "prettier",
-        "airbnb-base"
-    ],
-    "plugins": [
-      "prettier"
+        "airbnb-base",
+        "plugin:prettier/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 11,
@@ -18,8 +15,17 @@
         "no-global-assign": "off",
         "no-unused-vars": "off",
         "no-shadow": "off",
+        "consistent-return": "off",
         "camelcase": "warn",
         "comma-dangle": "off",
-        "no-use-before-define": "off"
+        "no-use-before-define": "off",
+        "prettier/prettier": [
+            "error",
+            {
+              "trailingComma": "es5",
+              "singleQuote": true,
+              "printWidth": 100
+            }
+          ]
     }
 }

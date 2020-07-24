@@ -11,7 +11,6 @@ AuthRouter.post('/login', loginSchema(), validateRequest, login);
 AuthRouter.post('/refresh-token', tokenSchema(), validateRequest, refreshToken);
 AuthRouter.post('/revoke-token', tokenSchema(), validateRequest, revokeToken);
 
-// Request schema
 function registerSchema() {
   return [
     body('firstName', 'First Name field is required').not().isEmpty(),
@@ -33,16 +32,14 @@ function loginSchema() {
 }
 
 function tokenSchema() {
-  return [
-    body('refreshToken', 'Invalid refresh token').not().isEmpty(),
-  ];
+  return [body('refreshToken', 'Invalid refresh token').not().isEmpty()];
 }
 
 // Calls to controller
 function register(req, res, next) {
   AuthController.register(req.body)
     .then((user) => {
-      res.status(200).json({
+      res.status(201).json({
         message: 'Register success',
         user,
       });
@@ -66,7 +63,7 @@ function login(req, res, next) {
 function refreshToken(req, res, next) {
   AuthController.refreshToken(req.body.refreshToken)
     .then(({ jwtToken, refreshToken }) => {
-      res.status(200).json({
+      res.status(201).json({
         message: 'Refresh token success',
         jwtToken,
         refreshToken,
@@ -77,9 +74,11 @@ function refreshToken(req, res, next) {
 
 function revokeToken(req, res, next) {
   AuthController.revokeToken(req.body.refreshToken)
-    .then(() => res.status(200).json({
-      message: 'Revoke token success',
-    }))
+    .then(() =>
+      res.status(200).json({
+        message: 'Revoke token success',
+      })
+    )
     .catch(next);
 }
 
