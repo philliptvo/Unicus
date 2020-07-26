@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 
-import { get } from 'http';
 import User from '../models/user';
 import { ErrorHandler } from '../middlewares/error';
 import RefreshToken from '../models/refreshToken';

@@ -16,5 +16,7 @@
   "bugs": {
     "url": "https://github.com/philliptvo/Unicus/issues"
   },
-  "homepage": "https://github.com/philliptvo/Unicus#readme"
+  "homepage": "https://github.com/philliptvo/Unicus#readme",
+  "dependencies": {
+  }
 }

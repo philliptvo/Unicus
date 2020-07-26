@@ -1,3 +1,16 @@
-.DS_Store
 node_modules/
 .vscode/
+
+# Expo
+.expo/*
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# macOS
+.DS_Store
