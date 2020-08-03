@@ -1,6 +1,7 @@
-import { Strategy, ExtractJwt } from "passport-jwt";
+import { Strategy, ExtractJwt } from 'passport-jwt';
 
-import User from "../models/user";
+import User from '../models/user';
+import { ErrorHandler } from '../middlewares/error';
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -9,15 +10,16 @@ const opts = {
 
 const Passport = (passport) => {
   passport.use(
-    new Strategy(opts, (jwt_payload, done) => {
-      User.findById(jwt_payload.id)
-        .then((user) => {
-          if (user) {
-            return done(null, user);
-          }
-          return done(null, false);
-        })
-        .catch((err) => console.log(err));
+    new Strategy(opts, async (jwtPayload, done) => {
+      try {
+        const user = await User.findById(jwtPayload.id);
+        if (user) {
+          return done(null, user);
+        }
+        return done(null, false);
+      } catch (err) {
+        throw new ErrorHandler(401, 'Unauthorized');
+      }
     })
   );
 };

@@ -1,34 +1,51 @@
-import express from "express";
-import { validationResult } from "express-validator";
+import express from 'express';
 
-import { validateAuthInput, registerUser, loginUser } from "../services/auth";
+import {
+  getAll, getById, updateById, deleteById
+} from '../controllers/users';
+import { ErrorHandler } from '../middlewares/error';
 
 const UsersRouter = express.Router();
 
-// @route POST api/users/register
-// @desc Register user
-// @access Public
-UsersRouter.post("/register", validateAuthInput("register"), (req, res) => {
-  const errors = validationResult(req);
+UsersRouter.get('/', getAllUsers);
+UsersRouter.get('/:id', getUser);
+UsersRouter.put('/:id', updateUser);
+UsersRouter.delete('/:id', deleteUser);
 
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors);
+function getAllUsers(req, res, next) {
+  getAll()
+    .then((user) => res.status(200).json({ status: 'Retrieve success', message: user }))
+    .catch(next);
+}
+
+function getUser(req, res, next) {
+  if (req.user.id !== req.params.id) {
+    throw new ErrorHandler(401, 'Unauthorized');
   }
 
-  return registerUser(req, res);
-});
+  getById(req.user.id)
+    .then((user) => res.status(200).json({ status: 'Retrieve success', message: user }))
+    .catch(next);
+}
 
-// @route POST api/users/login
-// @desc Login user and return JWT token
-// @access Public
-UsersRouter.post("/login", validateAuthInput("login"), (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors);
+function updateUser(req, res, next) {
+  if (req.user.id !== req.params.id) {
+    throw new ErrorHandler(401, 'Unauthorized');
   }
 
-  return loginUser(req, res);
-});
+  updateById(req.user.id, req.body)
+    .then((user) => res.status(200).json({ status: 'Update success', message: user }))
+    .catch(next);
+}
+
+function deleteUser(req, res, next) {
+  if (req.user.id !== req.params.id) {
+    throw new ErrorHandler(401, 'Unauthorized');
+  }
+
+  deleteById(req.user.id)
+    .then((user) => res.status(200).json({ status: 'Delete success', message: user }))
+    .catch(next);
+}
 
 export default UsersRouter;

@@ -1,7 +1,11 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
@@ -13,12 +17,19 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
+  role: {
+    type: String,
+    required: true,
+  },
+  created: {
     type: Date,
     default: Date.now,
   },
+  updated: {
+    type: Date,
+  }
 });
 
-const User = mongoose.model("users", UserSchema);
+const User = mongoose.model('users', UserSchema);
 
 export default User;
