@@ -34,5 +34,8 @@ const getAccount = async (id) => {
 };
 
 export {
-  getAll, getById, updateById, deleteById
+  getAll,
+  getById,
+  updateById,
+  deleteById
 };

@@ -9,6 +9,7 @@ import { handleError } from './middlewares/error';
 
 import AuthRouter from './routes/auth';
 import UsersRouter from './routes/users';
+import RefreshToken from './models/refreshToken';
 
 const server = express();
 
@@ -36,6 +37,14 @@ Passport(passport);
 
 // Routes
 server.use('/api/auth', AuthRouter);
+server.get('/api/admin/tokens', async (req, res) => {
+  const tokens = await RefreshToken.find({});
+  res.status(200).json({ tokens });
+});
+server.delete('/api/admin/clearTokens', async (req, res) => {
+  await RefreshToken.deleteMany({});
+  res.status(200).json({});
+});
 server.use('/api/users', passport.authenticate('jwt', { session: false }), UsersRouter);
 
 // Global error handler

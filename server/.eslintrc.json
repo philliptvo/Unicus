@@ -17,6 +17,7 @@
     "rules": {
         "no-global-assign": "off",
         "no-unused-vars": "off",
+        "no-shadow": "off",
         "camelcase": "warn",
         "comma-dangle": "off",
         "no-use-before-define": "off"
