@@ -2,7 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import DrawerContent from '../components/drawerContent';
+import DrawerContent from '../components/App/drawerContent';
 import CollectionsNavigator from './CollectionsNavigator';
 import WishlistNavigator from './WishlistNavigator';
 import SettingsNavigator from './SettingsNavigator';
@@ -17,7 +17,7 @@ const AppNavigator = () => {
       drawerContent={(props) => <DrawerContent {...props} />}
     >
       <Drawer.Screen
-        name="Home"
+        name="Collections"
         component={CollectionsNavigator}
         options={{
           drawerLabel: 'Collections',

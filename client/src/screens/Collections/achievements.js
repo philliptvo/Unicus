@@ -1,7 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-
-import styles from './styles';
+import { StyleSheet, Text, View } from 'react-native';
 
 const AchievementsScreen = () => {
   return (
@@ -10,5 +8,14 @@ const AchievementsScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF', // '#AFAFDC',
+  },
+});
 
 export default AchievementsScreen;

@@ -14,7 +14,7 @@ import {
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { useAuthState, useAuthDispatch } from '../common/contexts/auth';
+import { useAuthState, useAuthDispatch } from '../../common/contexts/auth';
 
 const DrawerContent = (props) => {
   const { userName, isDarkTheme } = useAuthState();

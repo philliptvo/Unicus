@@ -1,17 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useTheme } from 'react-native-paper';
+import * as Animatable from 'react-native-animatable';
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import * as yup from 'yup';
+
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
-import * as Animatable from 'react-native-animatable';
 
-import { globalStyleVariables } from '../../styles';
 import { useAuthDispatch } from '../../common/contexts/auth';
 import { setAuthToken } from '../../common/utils/auth';
-import Form from '../../components/form';
-import FormField from '../../components/formField';
+import StaticForm from '../../components/Forms/staticForm';
+import { TextField } from '../../components/Forms/staticFields';
+import { ButtonText } from '../../components/buttons';
 
 const loginSchema = yup.object({
   email: yup.string().email('Not a valid email.').required('Required.'),
@@ -19,7 +22,9 @@ const loginSchema = yup.object({
 });
 
 const LoginScreen = () => {
+  const theme = useTheme();
   const dispatch = useAuthDispatch();
+
   const { control, handleSubmit, errors } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(loginSchema),
@@ -43,25 +48,30 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
       <View style={styles.header}>
         <Text style={styles.textHeader}>Unicus</Text>
       </View>
-      <Animatable.View style={styles.footer} animation="fadeInUp">
-        <Form {...{ control, errors }}>
-          <FormField name="email" label="Email" autoCapitalize="none" />
-          <FormField name="password" label="Password" secureTextEntry autoCapitalize="none" />
-        </Form>
+      <Animatable.View
+        style={[styles.footer, { backgroundColor: theme.colors.primary }]}
+        animation="fadeInUp"
+      >
+        <StaticForm {...{ control, errors }}>
+          <TextField name="email" label="Email" autoCapitalize="none" />
+          <TextField name="password" label="Password" secureTextEntry autoCapitalize="none" />
 
-        <TouchableOpacity style={{ marginTop: 15 }}>
-          <Text style={{ color: '#fff' }}>Forgot Password?</Text>
-        </TouchableOpacity>
-
-        <View style={styles.button}>
-          <TouchableOpacity style={styles.buttonAction} onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.buttonText}>Login</Text>
+          <TouchableOpacity style={{ marginTop: 15 }}>
+            <Text style={{ color: '#fff' }}>Forgot Password?</Text>
           </TouchableOpacity>
-        </View>
+
+          <ButtonText
+            buttonStyles={styles.button}
+            buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.accent }]}
+            handlePress={handleSubmit(onSubmit)}
+            label="Login"
+            textStyles={styles.buttonText}
+          />
+        </StaticForm>
       </Animatable.View>
     </View>
   );
@@ -70,7 +80,6 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
     flex: 1,
@@ -80,9 +89,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 3,
-    backgroundColor: globalStyleVariables.PRIMARY_COLOR,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     paddingVertical: 50,
     paddingHorizontal: 30,
   },
@@ -100,7 +108,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   buttonAction: {
-    backgroundColor: globalStyleVariables.SECONDARY_COLOR,
     borderRadius: 10,
     width: '100%',
     height: 50,

@@ -7,16 +7,17 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
+import { useTheme } from 'react-native-paper';
+import * as Animatable from 'react-native-animatable';
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import * as yup from 'yup';
 import axios from 'axios';
-import * as Animatable from 'react-native-animatable';
 
-import { globalStyleVariables } from '../../styles';
-import { useAuthDispatch } from '../../common/contexts/auth';
-import Form from '../../components/form';
-import FormField from '../../components/formField';
+import StaticForm from '../../components/Forms/staticForm';
+import { TextField } from '../../components/Forms/staticFields';
+import { ButtonText } from '../../components/buttons';
 
 const registerSchema = yup.object({
   firstName: yup.string().required('Required.'),
@@ -33,6 +34,8 @@ const registerSchema = yup.object({
 });
 
 const RegisterScreen = ({ navigation }) => {
+  const theme = useTheme();
+
   const { control, handleSubmit, errors } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(registerSchema),
@@ -56,32 +59,37 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.surface }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled
     >
       <View style={styles.header}>
         <Text style={styles.textHeader}>Register!</Text>
       </View>
-      <Animatable.View style={styles.footer} animation="fadeInUp">
-        <Form {...{ control, errors }}>
-          <FormField name="firstName" label="First Name" />
-          <FormField name="lastName" label="Last Name" />
-          <FormField name="email" label="Email" autoCapitalize="none" />
-          <FormField name="password" label="Password" secureTextEntry autoCapitalize="none" />
-          <FormField
+      <Animatable.View
+        style={[styles.footer, { backgroundColor: theme.colors.primary }]}
+        animation="fadeInUp"
+      >
+        <StaticForm {...{ control, errors }}>
+          <TextField name="firstName" label="First Name" />
+          <TextField name="lastName" label="Last Name" />
+          <TextField name="email" label="Email" autoCapitalize="none" />
+          <TextField name="password" label="Password" secureTextEntry autoCapitalize="none" />
+          <TextField
             name="confirmPassword"
             label="Confirm Password"
             secureTextEntry
             autoCapitalize="none"
           />
 
-          <View style={styles.button}>
-            <TouchableOpacity style={styles.buttonAction} onPress={handleSubmit(onSubmit)}>
-              <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity>
-          </View>
-        </Form>
+          <ButtonText
+            buttonStyles={styles.button}
+            buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.accent }]}
+            handlePress={handleSubmit(onSubmit)}
+            label="Register"
+            textStyles={styles.buttonText}
+          />
+        </StaticForm>
       </Animatable.View>
     </KeyboardAvoidingView>
   );
@@ -90,7 +98,6 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
     flex: 1,
@@ -100,7 +107,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 4,
-    backgroundColor: globalStyleVariables.PRIMARY_COLOR,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     paddingVertical: 30,
@@ -120,7 +126,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   buttonAction: {
-    backgroundColor: globalStyleVariables.SECONDARY_COLOR,
     borderRadius: 10,
     width: '100%',
     height: 50,

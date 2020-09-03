@@ -11,6 +11,7 @@ import {
   DefaultTheme as NavigationDefaultTheme,
   DarkTheme as NavigationDarkTheme,
 } from '@react-navigation/native';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import { AuthProvider, AuthStateContext } from './common/contexts/auth';
 import RootNavigator from './navigations/RootNavigator';
@@ -18,20 +19,20 @@ import RootNavigator from './navigations/RootNavigator';
 axios.defaults.baseURL = 'https://unicus-api.herokuapp.com/api';
 
 const CustomDefaultTheme = {
-  ...NavigationDefaultTheme,
   ...PaperDefaultTheme,
+  ...NavigationDefaultTheme,
   colors: {
-    ...NavigationDefaultTheme.colors,
     ...PaperDefaultTheme.colors,
+    ...NavigationDefaultTheme.colors,
   },
 };
 
 const CustomDarkTheme = {
-  ...NavigationDarkTheme,
   ...PaperDarkTheme,
+  ...NavigationDarkTheme,
   colors: {
-    ...NavigationDarkTheme.colors,
     ...PaperDarkTheme.colors,
+    ...NavigationDarkTheme.colors,
   },
 };
 
@@ -43,11 +44,13 @@ const App = () => {
           const { isDarkTheme } = value;
 
           return (
-            <PaperProvider theme={isDarkTheme ? CustomDarkTheme : CustomDefaultTheme}>
-              <NavigationContainer theme={isDarkTheme ? CustomDarkTheme : CustomDefaultTheme}>
-                <RootNavigator />
-              </NavigationContainer>
-            </PaperProvider>
+            <ActionSheetProvider>
+              <PaperProvider theme={isDarkTheme ? CustomDarkTheme : CustomDefaultTheme}>
+                <NavigationContainer theme={isDarkTheme ? CustomDarkTheme : CustomDefaultTheme}>
+                  <RootNavigator />
+                </NavigationContainer>
+              </PaperProvider>
+            </ActionSheetProvider>
           );
         }}
       </AuthStateContext.Consumer>
