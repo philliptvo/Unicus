@@ -11,10 +11,13 @@ const getById = async (userId) => {
   return userInfo(user);
 };
 
-const updateById = async (userId, params) => {
+const updateById = async (userId, params, profile) => {
   const user = await getAccount(userId);
 
   Object.assign(user, params);
+  if (profile) {
+    user.profile = profile.filename;
+  }
   user.updated = Date.now();
   await user.save();
 
@@ -36,12 +39,13 @@ const getAccount = async (id) => {
 };
 
 const userInfo = (user) => {
-  const { id, firstName, lastName, email, role, created, updated } = user;
+  const { id, firstName, lastName, email, profile, role, created, updated } = user;
   return {
     id,
     firstName,
     lastName,
     email,
+    profile,
     role,
     created,
     updated,

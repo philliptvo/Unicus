@@ -17,8 +17,8 @@ function registerSchema() {
     body('lastName', 'Last Name field is required').not().isEmpty(),
     body('email', 'Email field is required').not().isEmpty(),
     body('email', 'Not a valid email').isEmail(),
-    body('password', 'Password must be at least 5 characters').isLength({
-      min: 5,
+    body('password', 'Password must be at least 8 characters').isLength({
+      min: 8,
     }),
   ];
 }
@@ -27,7 +27,7 @@ function loginSchema() {
   return [
     body('email', 'Email field is required').not().isEmpty(),
     body('email', 'Not a valid email').isEmail(),
-    body('password', 'Password must be greater 5 characters').isLength({ min: 5 }),
+    body('password', 'Password must be greater 8 characters').isLength({ min: 8 }),
   ];
 }
 

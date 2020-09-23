@@ -107,12 +107,13 @@ const generateRefreshToken = (user) =>
 const randomTokenString = () => crypto.randomBytes(40).toString('hex');
 
 const userInfo = (user) => {
-  const { id, firstName, lastName, email, role, created, updated } = user;
+  const { id, firstName, lastName, email, profile, role, created, updated } = user;
   return {
     id,
     firstName,
     lastName,
     email,
+    profile,
     role,
     created,
     updated,

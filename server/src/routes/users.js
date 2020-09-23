@@ -1,13 +1,14 @@
 import express from 'express';
 
 import authorize from '../middlewares/authorize';
+import upload from '../middlewares/upload';
 import * as UserController from '../controllers/users';
 
 const UsersRouter = express.Router();
 
 UsersRouter.get('/all', authorize, getAllUsers);
 UsersRouter.get('/', getUser);
-UsersRouter.put('/', updateUser);
+UsersRouter.put('/', upload.single('profile'), updateUser);
 UsersRouter.delete('/', deleteUser);
 
 function getAllUsers(req, res, next) {
@@ -23,7 +24,7 @@ function getUser(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-  UserController.updateById(req.user.id, req.body)
+  UserController.updateById(req.user.id, req.body, req.file)
     .then((user) => res.status(200).json({ message: 'Update success', user }))
     .catch(next);
 }
