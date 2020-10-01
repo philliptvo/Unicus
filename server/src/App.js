@@ -29,7 +29,6 @@ server.use(passport.initialize());
 Passport(passport);
 
 // Routes
-
 server.use('/api/auth', AuthRouter);
 server.use(
   '/api/admin',
@@ -46,7 +45,6 @@ server.use(
   passport.authenticate('jwt', { session: false, failureRedirect: '/forbidden' }),
   FilesRouter
 );
-
 server.use(
   '/api/collections',
   passport.authenticate('jwt', { session: false, failureRedirect: '/forbidden' }),

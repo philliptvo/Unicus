@@ -8,7 +8,7 @@ const UsersRouter = express.Router();
 
 UsersRouter.get('/all', authorize, getAllUsers);
 UsersRouter.get('/', getUser);
-UsersRouter.put('/', upload.single('profile'), updateUser);
+UsersRouter.put('/', upload.single('image'), updateUser);
 UsersRouter.delete('/', deleteUser);
 
 function getAllUsers(req, res, next) {

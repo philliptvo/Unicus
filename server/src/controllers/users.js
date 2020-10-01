@@ -1,5 +1,11 @@
+import mongoose from 'mongoose';
 import { ErrorHandler } from '../middlewares/error';
 import User from '../models/user';
+
+let gfs;
+mongoose.connection.once('open', () => {
+  gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName: 'uploads' });
+});
 
 const getAll = async () => {
   const users = await User.find({});
@@ -16,7 +22,10 @@ const updateById = async (userId, params, profile) => {
 
   Object.assign(user, params);
   if (profile) {
-    user.profile = profile.filename;
+    if (user.profile) {
+      gfs.delete(new mongoose.Types.ObjectId(user.profile));
+    }
+    user.profile = profile.id;
   }
   user.updated = Date.now();
   await user.save();
