@@ -36,6 +36,6 @@ const CollectionSchema = new mongoose.Schema({
   },
 });
 
-const Collection = mongoose.model('Collections', CollectionSchema);
+const Collection = mongoose.model('Collection', CollectionSchema);
 
 export default Collection;

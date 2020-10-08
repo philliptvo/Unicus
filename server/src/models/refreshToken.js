@@ -23,6 +23,6 @@ RefreshTokenSchema.virtual('isActive').get(function () {
   return !this.revoked && !this.isExpired;
 });
 
-const RefreshToken = mongoose.model('RefreshTokens', RefreshTokenSchema);
+const RefreshToken = mongoose.model('RefreshToken', RefreshTokenSchema);
 
 export default RefreshToken;
