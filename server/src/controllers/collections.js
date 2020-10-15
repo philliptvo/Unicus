@@ -1,5 +1,11 @@
+import mongoose from 'mongoose';
 import { ErrorHandler } from '../middlewares/error';
 import Collection from '../models/collection';
+
+let gfs;
+mongoose.connection.once('open', () => {
+  gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName: 'uploads' });
+});
 
 const getAll = async (user) => {
   const collections = await Collection.find({ userId: user.id }, 'name image');
@@ -11,7 +17,7 @@ const getById = async (collectionId) => {
   return collection;
 };
 
-const create = async (user, params) => {
+const create = async (user, params, cover) => {
   const foundCollection = await Collection.findOne({ name: params.name });
   if (foundCollection) {
     throw new ErrorHandler(400, 'Collection already exists');
@@ -21,15 +27,24 @@ const create = async (user, params) => {
     ...params,
     userId: user.id,
   });
+  if (cover) {
+    newCollection.cover = cover.id;
+  }
 
   const collection = await newCollection.save();
   return collection;
 };
 
-const updateById = async (collectionId, params) => {
+const updateById = async (collectionId, params, cover) => {
   const collection = await getCollection(collectionId);
 
   Object.assign(collection, params);
+  if (cover) {
+    if (collection.cover) {
+      gfs.delete(new mongoose.Types.ObjectId(collection.cover));
+    }
+    collection.cover = cover.id;
+  }
   collection.updated = Date.now();
   await collection.save();
 

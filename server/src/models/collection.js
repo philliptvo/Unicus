@@ -7,19 +7,22 @@ const CollectionSchema = new mongoose.Schema({
   },
   fields: [
     {
-      propType: {
-        type: String,
-        enum: ['Text', 'Select', 'Multi-Select', 'Files & Media', 'Checkbox'],
-        required: true,
-      },
       name: {
         type: String,
         required: true,
       },
-      values: [String],
+      fieldType: {
+        type: String,
+        require: true,
+        enum: ['TextField', 'SelectField', 'MSelectField', 'FilesField', 'CheckboxField'],
+      },
+      options: {
+        type: [String],
+        default: [],
+      },
     },
   ],
-  image: {
+  cover: {
     type: String,
     default: '',
   },
