@@ -22,7 +22,7 @@ const CollectionSchema = new mongoose.Schema({
       },
     },
   ],
-  cover: {
+  image: {
     type: String,
     default: '',
   },

@@ -17,7 +17,7 @@ const getById = async (collectionId) => {
   return collection;
 };
 
-const create = async (user, params, cover) => {
+const create = async (user, params, image) => {
   const foundCollection = await Collection.findOne({ name: params.name });
   if (foundCollection) {
     throw new ErrorHandler(400, 'Collection already exists');
@@ -27,23 +27,23 @@ const create = async (user, params, cover) => {
     ...params,
     userId: user.id,
   });
-  if (cover) {
-    newCollection.cover = cover.id;
+  if (image) {
+    newCollection.image = image.id;
   }
 
   const collection = await newCollection.save();
   return collection;
 };
 
-const updateById = async (collectionId, params, cover) => {
+const updateById = async (collectionId, params, image) => {
   const collection = await getCollection(collectionId);
 
   Object.assign(collection, params);
-  if (cover) {
-    if (collection.cover) {
-      gfs.delete(new mongoose.Types.ObjectId(collection.cover));
+  if (image) {
+    if (collection.image) {
+      gfs.delete(new mongoose.Types.ObjectId(collection.image));
     }
-    collection.cover = cover.id;
+    collection.image = image.id;
   }
   collection.updated = Date.now();
   await collection.save();
@@ -53,6 +53,9 @@ const updateById = async (collectionId, params, cover) => {
 
 const deleteById = async (collectionId) => {
   const collection = await getCollection(collectionId);
+  if (collection.image) {
+    gfs.delete(new mongoose.Types.ObjectId(collection.image));
+  }
   await collection.remove();
 
   return collection;

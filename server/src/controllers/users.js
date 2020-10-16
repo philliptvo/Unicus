@@ -17,15 +17,15 @@ const getById = async (userId) => {
   return userInfo(user);
 };
 
-const updateById = async (userId, params, profile) => {
+const updateById = async (userId, params, image) => {
   const user = await getAccount(userId);
 
   Object.assign(user, params);
-  if (profile) {
-    if (user.profile) {
-      gfs.delete(new mongoose.Types.ObjectId(user.profile));
+  if (image) {
+    if (user.image) {
+      gfs.delete(new mongoose.Types.ObjectId(user.image));
     }
-    user.profile = profile.id;
+    user.image = image.id;
   }
   user.updated = Date.now();
   await user.save();
@@ -35,6 +35,9 @@ const updateById = async (userId, params, profile) => {
 
 const deleteById = async (userId) => {
   const user = await getAccount(userId);
+  if (user.image) {
+    gfs.delete(new mongoose.Types.ObjectId(user.image));
+  }
   await user.remove();
 
   return userInfo(user);
@@ -48,13 +51,13 @@ const getAccount = async (id) => {
 };
 
 const userInfo = (user) => {
-  const { id, firstName, lastName, email, profile, role, created, updated } = user;
+  const { id, firstName, lastName, email, image, role, created, updated } = user;
   return {
     id,
     firstName,
     lastName,
     email,
-    profile,
+    image,
     role,
     created,
     updated,
