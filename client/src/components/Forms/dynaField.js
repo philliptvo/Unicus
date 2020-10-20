@@ -12,22 +12,20 @@ const DynaField = ({ control, index, remove }) => (
     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
       <Controller
         control={control}
-        name={`fields[${index}].type`}
-        defaultValue="Field Type"
+        name={`fields[${index}].fieldType`}
+        defaultValue="TextField"
         render={({ onChange, onBlur, value }) => (
           <Picker
             style={[styles.input, { flex: 9 }]}
             onBlur={onBlur}
-            onValueChange={(val) => {
-              if (val !== '0') onChange(val);
-            }}
+            onValueChange={(val) => onChange(val)}
             selectedValue={value}
           >
-            <Picker.Item label="Field Type" value="0" />
-            <Picker.Item label="Text" value="text" />
-            <Picker.Item label="Select" value="select" />
-            <Picker.Item label="Multi-Select" value="select" />
-            <Picker.Item label="Files & Media" value="fileMedia" />
+            <Picker.Item label="Text" value="TextField" />
+            <Picker.Item label="Select" value="SelectField" />
+            <Picker.Item label="Multi-Select" value="MSelectField" />
+            <Picker.Item label="Files & Media" value="FilesField" />
+            <Picker.Item label="Checkbox" value="CheckboxField" />
           </Picker>
         )}
       />
@@ -41,7 +39,7 @@ const DynaField = ({ control, index, remove }) => (
 
     <Controller
       control={control}
-      name={`fields[${index}].key`}
+      name={`fields[${index}].name`}
       defaultValue=""
       render={({ onChange, onBlur, value }) => (
         <View
@@ -68,7 +66,7 @@ const DynaField = ({ control, index, remove }) => (
     <OptionalField
       control={control}
       index={index}
-      cond={{ key: 'type', value: ['select'], label: 'values' }}
+      cond={{ key: 'fieldType', value: ['SelectField', 'MSelectField'], label: 'options' }}
       defaultValue={{ tag: '', tagsArray: [] }}
       renderItem={({ onChange, onBlur, value }) => (
         <TagInput

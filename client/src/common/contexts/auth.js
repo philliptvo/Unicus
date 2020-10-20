@@ -9,7 +9,8 @@ const initialState = {
   isDarkTheme: false,
   userFirstName: null,
   userLastName: null,
-  userId: null,
+  userEmail: null,
+  userProfile: null,
 };
 
 const AuthReducer = (state, action) => {
@@ -21,13 +22,8 @@ const AuthReducer = (state, action) => {
         isLoggedIn: true,
         userFirstName: action.user.firstName,
         userLastName: action.user.lastName,
-        userId: action.user.id,
-      };
-    case 'REFRESH_TOKEN_SUCCESS':
-      return {
-        ...state,
-        isLoading: false,
-        isLoggedIn: true,
+        userEmail: action.user.email,
+        userProfile: action.user.image,
       };
     case 'LOGOUT':
       return {
@@ -36,6 +32,8 @@ const AuthReducer = (state, action) => {
         isLoggedIn: false,
         userFirstName: null,
         userLastName: null,
+        userEmail: null,
+        userProfile: null,
       };
     case 'TOGGLE_THEME':
       return {

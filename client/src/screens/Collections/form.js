@@ -1,7 +1,7 @@
 import React from 'react';
 import { YellowBox } from 'react-native';
 
-import CreateForm from '../../components/Forms/createForm';
+import { CollectionForm } from '../../components/Forms';
 
 // NOTE: Warning occurs be callback (onSubmit) is passed through route params. This
 //  affects state persistence and deeplinking to screen that accept functions in params
@@ -10,7 +10,15 @@ YellowBox.ignoreWarnings(['Non-serializable values were found in the navigation 
 const FormScreen = ({ route, navigation }) => {
   const { title, onSubmit } = route.params;
 
-  return <CreateForm title={title} onSubmit={onSubmit} onCancel={() => navigation.pop()} />;
+  return (
+    <>
+      {title === 'Collection' ? (
+        <CollectionForm onSubmit={onSubmit} onCancel={() => navigation.pop()} />
+      ) : (
+        <CollectionForm onSubmit={onSubmit} onCancel={() => navigation.pop()} />
+      )}
+    </>
+  );
 };
 
 export default FormScreen;

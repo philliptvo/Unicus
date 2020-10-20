@@ -18,7 +18,7 @@ import { setAuthToken } from './common/utils/auth';
 import { getRefreshToken, setRefreshToken } from './common/utils/storage';
 import RootNavigator from './navigations/RootNavigator';
 
-axios.defaults.baseURL = 'https://unicus-api.herokuapp.com/api';
+axios.defaults.baseURL = 'https://unicusapp.herokuapp.com/api';
 
 axios.interceptors.response.use(
   (res) => {
@@ -33,7 +33,7 @@ axios.interceptors.response.use(
     console.log(
       `[${new Date().toLocaleString()}] [${err.config.method.toUpperCase()} ${err.config.baseURL}${
         err.config.url
-      }] [ERROR] Status: ${err.response.status}`
+      }] [ERROR] Status: ${err.response.status} Message: ${err.response.data.message}`
     );
     const originalRequest = err.config;
 
@@ -74,7 +74,7 @@ const CustomDefaultTheme = {
     ...PaperDefaultTheme.colors,
     ...NavigationDefaultTheme.colors,
     primary: '#ff8800',
-    accent: '#ffc88a',
+    accent: '#f5f5f5',
   },
 };
 

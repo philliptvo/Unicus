@@ -1,21 +1,26 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Header from '../components/App/header';
-import { SettingsScreen } from '../screens/Collections';
+import NavigationHeader from '../components/navigationHeader';
+import { EditProfileScreen, SettingsScreen } from '../screens/Settings';
 
 const Stack = createStackNavigator();
 
 const SettingsNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="My Collections"
+      initialRouteName="Settings"
       screenOptions={{
         header: ({ scene, previous, navigation }) => (
-          <Header scene={scene} previous={previous} navigation={navigation} />
+          <NavigationHeader scene={scene} previous={previous} navigation={navigation} />
         ),
       }}
     >
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{ headerTitle: 'Edit Profile' }}
+      />
       <Stack.Screen name="Settings" component={SettingsScreen} />
     </Stack.Navigator>
   );

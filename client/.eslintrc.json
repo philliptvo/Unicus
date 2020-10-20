@@ -5,11 +5,11 @@
     "react-native/react-native": true
   },
   "extends": [
-    "plugin:react/recommended",
     "airbnb",
-    "eslint:recommended",
     "prettier",
-    "prettier/react"
+    "prettier/standard",
+    "prettier/react",
+    "plugin:react/recommended"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -23,6 +23,7 @@
   "rules": {
     "import/no-extraneous-dependencies": "off",
     "no-use-before-define": "off",
+    "consistent-return": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",

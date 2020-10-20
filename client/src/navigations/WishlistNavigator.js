@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Header from '../components/App/header';
+import NavigationHeader from '../components/navigationHeader';
 import { WishlistScreen } from '../screens/Collections';
 
 const Stack = createStackNavigator();
@@ -9,10 +9,10 @@ const Stack = createStackNavigator();
 const CollectionsNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="My Collections"
+      initialRouteName="Wishlist"
       screenOptions={{
         header: ({ scene, previous, navigation }) => (
-          <Header scene={scene} previous={previous} navigation={navigation} />
+          <NavigationHeader scene={scene} previous={previous} navigation={navigation} />
         ),
       }}
     >

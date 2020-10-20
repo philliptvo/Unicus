@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-} from 'react-native';
+import { Platform, StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 
@@ -15,9 +8,8 @@ import { yupResolver } from '@hookform/resolvers';
 import * as yup from 'yup';
 import axios from 'axios';
 
-import StaticForm from '../../components/Forms/staticForm';
-import { TextField } from '../../components/Forms/staticFields';
-import { ButtonText } from '../../components/buttons';
+import { StaticForm, TextField } from '../../components/Forms';
+import ButtonText from '../../components/buttonText';
 
 const registerSchema = yup.object({
   firstName: yup.string().required('Required.'),
@@ -25,7 +17,7 @@ const registerSchema = yup.object({
   email: yup.string().email('Not a valid email.').required('Required.'),
   password: yup
     .string()
-    .min(6, 'Password should be longer than 6 characters.')
+    .min(8, 'Password should be longer than 8 characters.')
     .required('Required.'),
   confirmPassword: yup
     .string()
@@ -51,7 +43,7 @@ const RegisterScreen = ({ navigation }) => {
 
     try {
       await axios.post('/auth/register', newUser);
-      navigation.navigate('login');
+      navigation.navigate('Login');
     } catch (err) {
       alert(`Register failed with error: ${err.message}`);
     }
@@ -59,15 +51,15 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView
-      style={[styles.container, { backgroundColor: theme.colors.surface }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={[styles.container, { backgroundColor: theme.colors.primary }]}
+      behavior={Platform.OS === 'android' ? undefined : 'padding'}
       enabled
     >
       <View style={styles.header}>
         <Text style={styles.textHeader}>Register!</Text>
       </View>
       <Animatable.View
-        style={[styles.footer, { backgroundColor: theme.colors.primary }]}
+        style={[styles.footer, { backgroundColor: theme.colors.surface }]}
         animation="fadeInUp"
       >
         <StaticForm {...{ control, errors }}>
@@ -107,8 +99,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 4,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     paddingVertical: 30,
     paddingHorizontal: 30,
   },

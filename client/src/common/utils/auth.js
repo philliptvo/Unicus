@@ -6,7 +6,7 @@ const refreshAuthToken = async () => {
     const oldRefreshToken = await AsyncStorage.getItem('refresh-token');
     const res = await axios.post('/auth/refresh-token', { refreshToken: oldRefreshToken });
 
-    if (res.status === 200) {
+    if (res.status === 201) {
       const { jwtToken, refreshToken } = res.data;
 
       await AsyncStorage.setItem('refresh-token', refreshToken);

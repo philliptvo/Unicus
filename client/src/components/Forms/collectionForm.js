@@ -5,12 +5,12 @@ import { useForm, useFieldArray } from 'react-hook-form';
 
 import StaticForm from './staticForm';
 import { TextField, ImageField } from './staticFields';
-import { ButtonText } from '../buttons';
+import ButtonText from '../buttonText';
 import DynaField from './dynaField';
 
-const CreateForm = (props) => {
+const CollectionForm = (props) => {
   const theme = useTheme();
-  const { title, onSubmit, onCancel } = props;
+  const { onSubmit, onCancel } = props;
 
   const { control, handleSubmit, errors } = useForm();
   const { fields, append, remove } = useFieldArray({
@@ -21,24 +21,17 @@ const CreateForm = (props) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, flexDirection: 'column' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      enabled
-      // keyboardVerticalOffset={100}
+      behavior={Platform.OS === 'android' ? undefined : 'padding'}
     >
       <ScrollView style={{ padding: 20 }}>
         <StaticForm {...{ control, errors }}>
           <TextField
-            label={`${title} Name`}
+            label="Collection Name"
             name="name"
             placeholder="Collection"
             rules={{ required: 'You must provide a name for the collection.' }}
           />
-          <ImageField
-            label={`${title} Image`}
-            name="image"
-            defaultValue={{}}
-            buttonActionStyles={{ borderColor: theme.colors.border }}
-          />
+          <ImageField label="Collection Image" name="image" defaultValue={{}} size={150} />
         </StaticForm>
 
         {fields.map(({ id }, index) => {
@@ -57,14 +50,14 @@ const CreateForm = (props) => {
 
         <View style={{ flexDirection: 'row', marginBottom: 40 }}>
           <ButtonText
-            buttonActionStyles={{ borderColor: theme.colors.primary, borderWidth: 1 }}
+            buttonActionStyles={{ borderColor: theme.colors.accent, borderWidth: 1 }}
             handlePress={onCancel}
             label="Cancel"
             textStyles={styles.text}
           />
 
           <ButtonText
-            buttonActionStyles={{ backgroundColor: theme.colors.primary }}
+            buttonActionStyles={{ backgroundColor: theme.colors.accent }}
             handlePress={handleSubmit(onSubmit)}
             label="Create"
             textStyles={styles.text}
@@ -119,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateForm;
+export default CollectionForm;

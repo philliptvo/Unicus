@@ -12,7 +12,7 @@ const StaticForm = (props) => {
             key={child.props.name}
             control={control}
             name={child.props.name}
-            defaultValue={child.props.defaultValue ? child.props.defaultValue : ''}
+            defaultValue={child.props.defaultValue || ''}
             rules={child.props.rules ? child.props.rules : {}}
             render={({ onChange, onBlur, value }) =>
               createElement(child.type, {

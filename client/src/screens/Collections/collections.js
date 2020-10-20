@@ -1,54 +1,104 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-
 import axios from 'axios';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { ButtonIcon } from '../../components/buttons';
+import { processData, objectToFormData } from '../../common/utils/formdata';
+import FloatingAction from '../../components/floatingAction';
+import CollectionList from '../../components/collectionList';
 
 const CollectionsScreen = ({ navigation }) => {
   const theme = useTheme();
-  const [collections, setCollections] = useState([]);
+  const [state, setState] = useState({
+    refreshing: true,
+    collections: [],
+  });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const actions = [
+    {
+      text: 'New Collection',
+      icon: (size, color) => ({
+        type: 'MaterialIcons',
+        name: 'collections',
+        size,
+        color,
+      }),
+      name: 'bt_collection',
+      position: 0,
+      action: () => {
+        navigation.navigate('Form', { title: 'Collection', onSubmit: submitCollectionHandler });
+      },
+    },
+    {
+      text: 'New Item',
+      icon: (size, color) => ({
+        type: 'MaterialIcons',
+        name: 'photo',
+        size,
+        color,
+      }),
+      name: 'bt_item',
+      position: 1,
+      action: () => {
+        navigation.navigate('Form', { title: 'Item' });
+      },
+    },
+  ];
+
+  const fetchDataHandler = async () => {
+    try {
+      const { data } = await axios.get('/collections/');
+      setState({ refreshing: false, collections: data.collections });
+    } catch (err) {
+      // Do nothing
+    }
   };
 
-  const fetchData = async () => {
+  const pressCollectionHandler = (collection) => {
+    // TODO: navigate to collection screen
+    // navigation.navigate('Collection');
+    alert(`Pressed collection: ${collection.name}`);
+  };
+
+  const longPressCollectionHandler = (collection) => {
+    // TODO: handle selecting collection
+    alert(`Long pressed collection: ${collection.name}`);
+  };
+
+  const submitCollectionHandler = async (data) => {
+    const formData = objectToFormData(processData(data));
+    console.log('[SUBMIT COLLECTION]', formData);
     try {
-      // TODO: fetch and store collections corresponding to logged in user
-      console.log('Fetching data');
+      await axios.post('/collections/create', formData);
     } catch (err) {
-      console.warn(err);
+      // Do nothing
+    } finally {
+      await fetchDataHandler();
+      navigation.pop();
     }
   };
 
   useEffect(() => {
-    fetchData();
+    const timer = setTimeout(() => {
+      const asyncFetchData = async () => {
+        await fetchDataHandler();
+      };
+      asyncFetchData();
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
-      {collections.length === 0 ? (
-        <>
-          <Text style={[styles.text, { color: theme.colors.text }]}>
-            You have no collections yet!
-          </Text>
-          <Text style={{ color: theme.colors.text }}>Press '+' to create a new collection!</Text>
-        </>
-      ) : (
-        // TODO: Render collections
-        <Text>Collections</Text>
-      )}
-
-      <ButtonIcon
-        buttonActionStyles={{ position: 'absolute', bottom: 16, right: 16 }}
-        handlePress={() => {
-          navigation.navigate('Form', { title: 'Collection', onSubmit });
-        }}
-        icon={<MaterialCommunityIcons name="plus-circle" size={48} color={theme.colors.primary} />}
+      <CollectionList
+        collections={state.collections}
+        refreshing={state.refreshing}
+        onRefresh={fetchDataHandler}
+        onPress={pressCollectionHandler}
+        onLongPress={longPressCollectionHandler}
       />
+
+      <FloatingAction actions={actions} />
     </View>
   );
 };
@@ -56,17 +106,8 @@ const CollectionsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    backgroundColor: 'white',
-    borderRadius: 10,
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    padding: 5, // matches margin in collection icon
   },
 });
 

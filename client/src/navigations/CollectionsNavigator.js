@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Header from '../components/App/header';
+import NavigationHeader from '../components/navigationHeader';
 import {
   CollectionsScreen,
   CollectionScreen,
@@ -18,7 +18,7 @@ const CollectionsNavigator = () => {
         initialRouteName="My Collections"
         screenOptions={{
           header: ({ scene, previous, navigation }) => (
-            <Header scene={scene} previous={previous} navigation={navigation} />
+            <NavigationHeader scene={scene} previous={previous} navigation={navigation} />
           ),
         }}
       >
@@ -32,7 +32,9 @@ const CollectionsNavigator = () => {
         <Stack.Screen
           name="Form"
           component={FormScreen}
-          options={({ route }) => ({ headerTitle: `Create ${route.params.title}` })}
+          options={({ route }) => ({
+            headerTitle: `New ${route.params.title}`,
+          })}
         />
       </Stack.Navigator>
     </>

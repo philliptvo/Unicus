@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import {
-  Avatar,
   Title,
   Caption,
   Paragraph,
@@ -12,12 +10,16 @@ import {
   Switch,
 } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { useAuthState, useAuthDispatch } from '../../common/contexts/auth';
+import { useAuthState, useAuthDispatch } from '../common/contexts/auth';
+import { setAuthToken } from '../common/utils/auth';
+import { clearToken } from '../common/utils/storage';
+import UnicAvatar from './unicAvatar';
 
-const DrawerContent = (props) => {
-  const { userName, isDarkTheme } = useAuthState();
+const NavigationDrawer = (props) => {
+  const { userFirstName, userLastName, userProfile, isDarkTheme } = useAuthState();
   const dispatch = useAuthDispatch();
 
   const toggleTheme = () => {
@@ -26,11 +28,12 @@ const DrawerContent = (props) => {
 
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem('refresh-token');
+      clearToken();
+      setAuthToken();
 
       dispatch({ type: 'LOGOUT' });
     } catch (err) {
-      console.warn(err);
+      // Do nothing
     }
   };
 
@@ -39,14 +42,9 @@ const DrawerContent = (props) => {
       <DrawerContentScrollView style={styles.drawerContent}>
         <View style={styles.userInfoSection}>
           <View style={{ flexDirection: 'row', marginTop: 15 }}>
-            <Avatar.Image
-              source={{
-                uri: 'https://api.adorable.io/avatars/50/abott@adorable.png',
-              }}
-              size={50}
-            />
+            <UnicAvatar {...(userProfile && { image: userProfile })} size={50} />
             <View style={{ flexDirection: 'column', marginLeft: 15 }}>
-              <Title style={styles.title}>{userName}</Title>
+              <Title style={styles.title}>{`${userFirstName} ${userLastName}`}</Title>
               <Caption style={styles.caption}>Title: Hoarder</Caption>
             </View>
           </View>
@@ -136,4 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DrawerContent;
+export default NavigationDrawer;

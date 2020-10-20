@@ -2,7 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import DrawerContent from '../components/App/drawerContent';
+import NavigationDrawer from '../components/navigationDrawer';
 import CollectionsNavigator from './CollectionsNavigator';
 import WishlistNavigator from './WishlistNavigator';
 import SettingsNavigator from './SettingsNavigator';
@@ -13,11 +13,11 @@ const Drawer = createDrawerNavigator();
 const AppNavigator = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="My Collections"
-      drawerContent={(props) => <DrawerContent {...props} />}
+      initialRouteName="CollectionsStack"
+      drawerContent={(props) => <NavigationDrawer {...props} />}
     >
       <Drawer.Screen
-        name="Collections"
+        name="CollectionsStack"
         component={CollectionsNavigator}
         options={{
           drawerLabel: 'Collections',
@@ -27,7 +27,7 @@ const AppNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="Wishlist"
+        name="WishlistStack"
         component={WishlistNavigator}
         options={{
           drawerLabel: 'Wishlist',
@@ -35,7 +35,7 @@ const AppNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="Achievements"
+        name="AchievementsStack"
         component={AchievementsNavigator}
         options={{
           drawerLabel: 'Achievements',
@@ -45,7 +45,7 @@ const AppNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="Settings"
+        name="SettingsStack"
         component={SettingsNavigator}
         options={{
           drawerLabel: 'Settings',

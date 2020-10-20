@@ -21,7 +21,7 @@ const ImageField = ({ label, error, onChange, ...inputProps }) => {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>{label}</Text>
-      <ImageInput onChangeImage={(val) => onChange(val)} {...inputProps} />
+      <ImageInput onImageChange={(val) => onChange(val)} {...inputProps} />
       <Text>{!!error && error.message}</Text>
     </View>
   );

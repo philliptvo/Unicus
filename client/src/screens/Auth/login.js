@@ -12,12 +12,15 @@ import axios from 'axios';
 
 import { useAuthDispatch } from '../../common/contexts/auth';
 import { setAuthToken } from '../../common/utils/auth';
-import StaticForm from '../../components/Forms/staticForm';
-import { TextField } from '../../components/Forms/staticFields';
-import { ButtonText } from '../../components/buttons';
+import { StaticForm, TextField } from '../../components/Forms';
+import ButtonText from '../../components/buttonText';
 
 const loginSchema = yup.object({
-  email: yup.string().email('Not a valid email.').required('Required.'),
+  email: yup
+    .string()
+    .email('Not a valid email.')
+    .min(8, 'Password should be longer than 8 characters.')
+    .required('Required.'),
   password: yup.string().required('Required.'),
 });
 
@@ -48,20 +51,20 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.primary }]}>
       <View style={styles.header}>
         <Text style={styles.textHeader}>Unicus</Text>
       </View>
       <Animatable.View
-        style={[styles.footer, { backgroundColor: theme.colors.primary }]}
+        style={[styles.footer, { backgroundColor: theme.colors.surface }]}
         animation="fadeInUp"
       >
         <StaticForm {...{ control, errors }}>
           <TextField name="email" label="Email" autoCapitalize="none" />
           <TextField name="password" label="Password" secureTextEntry autoCapitalize="none" />
 
-          <TouchableOpacity style={{ marginTop: 15 }}>
-            <Text style={{ color: '#fff' }}>Forgot Password?</Text>
+          <TouchableOpacity style={{ marginTop: 15, paddingHorizontal: 30 }}>
+            <Text style={{ color: theme.colors.text }}>Forgot Password?</Text>
           </TouchableOpacity>
 
           <ButtonText
@@ -89,8 +92,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 3,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     paddingVertical: 50,
     paddingHorizontal: 30,
   },

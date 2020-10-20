@@ -1,22 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useCallback, useState } from 'react';
+import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 
-import { ButtonText } from './buttons';
+import { Feather } from '@expo/vector-icons';
+
+import { useUpdateEffect } from '../common/utils/hooks';
+import { getImageObject, selectImage } from '../common/utils/image';
 
 const ImageInput = (props) => {
-  const {
-    containerStyles,
-    buttonStyles,
-    buttonActionStyles,
-    imageStyles,
-    textStyles,
-    onChangeImage,
-  } = props;
+  const { initialImage, onImageChange, size, style } = props;
 
   const { showActionSheetWithOptions } = useActionSheet();
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [image, setImage] = useState(initialImage || null);
 
   const openActionSheet = () => {
     const options = ['Take photo', 'Choose photo from library', 'Cancel'];
@@ -29,60 +24,56 @@ const ImageInput = (props) => {
         useModal: true,
       },
       async (buttonIndex) => {
-        switch (buttonIndex) {
-          case 0:
-            await selectImage(0);
-            break;
-          case 1:
-            await selectImage(1);
-            break;
-          default:
-            break;
+        try {
+          const res = await selectImage(buttonIndex);
+          if (res) {
+            setImage(getImageObject(res.uri));
+          }
+        } catch (err) {
+          // Do nothing
         }
       }
     );
   };
 
-  const selectImage = async (mode) => {
-    const permission = await ImagePicker.requestCameraRollPermissionsAsync();
-
-    if (!permission.granted) {
-      return;
+  const selectImageHandler = useCallback((img) => {
+    if (onImageChange !== null) {
+      onImageChange(img);
     }
+  }, []);
 
-    let pickerResult;
-    if (mode === 0) {
-      pickerResult = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-      });
-    } else {
-      pickerResult = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-      });
-    }
-
-    if (pickerResult.cancelled === true) {
-      return;
-    }
-    setSelectedImage({ localuri: pickerResult.uri });
-  };
-
-  useEffect(() => {
-    onChangeImage(selectedImage);
-  }, [selectedImage]);
+  useUpdateEffect(() => {
+    selectImageHandler(image);
+  }, [image]);
 
   return (
-    <View style={[styles.container, containerStyles]}>
-      {selectedImage !== null && (
-        <Image source={{ uri: selectedImage.localuri }} style={[styles.thumbnail, imageStyles]} />
-      )}
-      <ButtonText
-        buttonStyles={buttonStyles}
-        buttonActionStyles={[styles.buttonAction, buttonActionStyles]}
-        handlePress={openActionSheet}
-        label={selectedImage == null ? 'Select Image' : 'Change Image'}
-        textStyles={textStyles}
-      />
+    <View style={[styles.container, style]}>
+      <TouchableOpacity
+        style={[
+          styles.action,
+          {
+            height: size + 2,
+            width: size + 2,
+          },
+          !image && {
+            borderStyle: 'dashed',
+            borderWidth: 3,
+            borderRadius: size / 5,
+          },
+        ]}
+        onPress={() => openActionSheet()}
+      >
+        {image ? (
+          <ImageBackground
+            source={image}
+            style={[styles.image, { height: size, width: size, borderRadius: size / 5 }]}
+          >
+            <Feather name="camera" size={size / 4} color="white" />
+          </ImageBackground>
+        ) : (
+          <Feather name="plus" size={size / 4} color="black" />
+        )}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -90,17 +81,16 @@ const ImageInput = (props) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginVertical: 20,
   },
-  thumbnail: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'contain',
+  action: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  buttonAction: {
-    width: '80%',
-    height: 30,
-    borderWidth: 2,
-    padding: 10,
+  image: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
   },
 });
 

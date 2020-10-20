@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import axios from 'axios';
 
 import { useAuthState, useAuthDispatch } from '../common/contexts/auth';
-import { refreshAuthToken } from '../common/utils/auth';
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
 
@@ -16,10 +16,10 @@ const RootNavigator = () => {
     setTimeout(() => {
       const callAsyncRefresh = async () => {
         try {
-          await refreshAuthToken();
-          dispatch({ type: 'REFRESH_TOKEN_SUCCESS' });
+          const { data } = await axios.get('/users/');
+          dispatch({ type: 'SET_CURRENT_USER', user: data.user });
         } catch (err) {
-          console.log('[callAsyncRefresh] silent refresh attempt');
+          // Silent refresh attempt
         }
       };
       callAsyncRefresh();

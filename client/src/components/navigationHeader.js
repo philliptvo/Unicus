@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 
-import logo from '../../assets/logo.png';
+import logo from '../assets/logo.png';
 
-const Header = ({ scene, previous, navigation }) => {
+const NavigationHeader = ({ scene, previous, navigation }) => {
   const theme = useTheme();
   const { options } = scene.descriptor;
   const title = options.headerTitle !== undefined ? options.headerTitle : scene.route.name;
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header;
+export default NavigationHeader;

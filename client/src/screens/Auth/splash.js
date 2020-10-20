@@ -1,32 +1,32 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 
-import splash from '../../assets/splash.png';
+import logo from '../../assets/logo.png';
 
-import { ButtonText } from '../../components/buttons';
+import ButtonText from '../../components/buttonText';
 
 const SplashScreen = ({ navigation }) => {
   const theme = useTheme();
 
   return (
-    <ImageBackground source={splash} style={styles.backgroundContainer}>
+    <View style={[styles.backgroundContainer, { backgroundColor: theme.colors.primary }]}>
       <View style={styles.header}>
-        {/* <Animatable.Image
+        <Animatable.Image
           animation="bounceIn"
           duration={1500}
           source={logo}
           style={styles.logo}
           resizeMode="stretch"
-        /> */}
+        />
       </View>
 
       <Animatable.View
-        style={[styles.footer, { backgroundColor: theme.colors.primary }]}
+        style={[styles.footer, { backgroundColor: theme.colors.surface }]}
         animation="fadeInUp"
       >
-        <Text style={[styles.textFooter, { color: theme.colors.accent }]}>Get Hoarding!</Text>
+        <Text style={[styles.textFooter, { color: theme.colors.primary }]}>Get Hoarding!</Text>
 
         <ButtonText
           buttonStyles={styles.button}
@@ -44,18 +44,16 @@ const SplashScreen = ({ navigation }) => {
           ]}
           handlePress={() => navigation.navigate('Login')}
           label="Login"
-          textStyles={styles.buttonText}
+          textStyles={[styles.buttonText, { color: theme.colors.accent }]}
         />
       </Animatable.View>
-    </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   backgroundContainer: {
     flex: 1,
-    width: null,
-    height: null,
   },
   header: {
     flex: 3,
@@ -64,8 +62,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     paddingVertical: 50,
     paddingHorizontal: 30,
   },

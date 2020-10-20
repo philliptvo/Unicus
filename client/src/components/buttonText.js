@@ -13,16 +13,6 @@ const ButtonText = (props) => {
   );
 };
 
-const ButtonIcon = (props) => {
-  const { buttonActionStyles, handlePress, icon } = props;
-
-  return (
-    <TouchableOpacity style={[styles.imageButtonAction, buttonActionStyles]} onPress={handlePress}>
-      {icon}
-    </TouchableOpacity>
-  );
-};
-
 const styles = StyleSheet.create({
   textButton: {
     flex: 1,
@@ -37,10 +27,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  imageButtonAction: {},
   text: {
     fontSize: 16,
   },
 });
 
-export { ButtonText, ButtonIcon };
+export default ButtonText;
