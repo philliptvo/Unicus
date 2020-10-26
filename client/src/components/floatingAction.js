@@ -1,64 +1,54 @@
-import React, { useRef, useState } from 'react';
-import {
-  StyleSheet,
-  Animated,
-  Platform,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import Animated, { interpolate } from 'react-native-reanimated';
+import { useTransition } from '../common/utils/transitions';
 
 import UnicIcon from './unicIcon';
 
-const BT_PRIMARY = 60;
-const BT_SECONDARY = 48;
-
 const FloatingActionItem = (props) => {
-  const { icon, text, position, action, animation, reset } = props;
+  const { action, transition, toggle } = props;
   const theme = useTheme();
 
-  const translationInterpolate = (n) => ({
-    opacity: animation.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: [0, 0, 1],
-    }),
-    transform: [
-      { scale: animation },
-      {
-        translateY: animation.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, -80 - 60 * n],
-        }),
-      },
-    ],
-  });
-
   return (
-    <Animated.View style={[styles.actionContainer, translationInterpolate(position)]}>
-      <View
-        style={[
-          styles.textContainer(theme),
-          Platform.OS === 'android' ? styles.androidShadow : styles.iosShadow,
-        ]}
-      >
-        <Text style={styles.text}>{text}</Text>
+    <Animated.View
+      style={[
+        styles.actionContainer,
+        {
+          opacity: interpolate(transition, {
+            inputRange: [0, 0.5, 1],
+            outputRange: [0, 0, 1],
+          }),
+          transform: [
+            { scale: transition },
+            {
+              translateY: interpolate(transition, {
+                inputRange: [0, 1],
+                outputRange: [0, -80 - 60 * action.position],
+              }),
+            },
+          ],
+        },
+      ]}
+    >
+      <View style={[styles.textContainer, styles.shadow, { backgroundColor: theme.colors.border }]}>
+        <Text style={styles.text}>{action.text}</Text>
       </View>
       <View
         style={[
           styles.button,
-          styles.secondary(theme),
-          Platform.OS === 'android' ? styles.androidShadow : styles.iosShadow,
+          styles.secondary,
+          styles.shadow,
+          { backgroundColor: theme.colors.accent },
         ]}
       >
         <TouchableOpacity
           onPress={() => {
-            reset();
-            action();
+            toggle();
+            action.onPress();
           }}
         >
-          <UnicIcon {...icon(20, theme.colors.primary)} />
+          <UnicIcon {...action.icon(20, theme.colors.primary)} />
         </TouchableOpacity>
       </View>
     </Animated.View>
@@ -69,28 +59,11 @@ const FloatingAction = (props) => {
   const { actions } = props;
 
   const theme = useTheme();
-  const animation = useRef(new Animated.Value(0)).current;
   const [active, setActive] = useState(false);
+  const transition = useTransition(active, { duration: 200 });
 
   const toggleMenu = () => {
-    Animated.spring(animation, {
-      toValue: active ? 0 : 1,
-      friction: 6,
-      useNativeDriver: true,
-    }).start();
-
     setActive(!active);
-  };
-
-  const rotationInterpolate = {
-    transform: [
-      {
-        rotate: animation.interpolate({
-          inputRange: [0, 1],
-          outputRange: ['0deg', '-45deg'],
-        }),
-      },
-    ],
   };
 
   const renderTappableBackground = () => (
@@ -106,9 +79,19 @@ const FloatingAction = (props) => {
         <Animated.View
           style={[
             styles.button,
-            styles.menu(theme),
-            Platform.OS === 'android' ? styles.androidShadow : styles.iosShadow,
-            rotationInterpolate,
+            styles.menu,
+            styles.shadow,
+            {
+              backgroundColor: theme.colors.primary,
+              transform: [
+                {
+                  rotate: interpolate(transition, {
+                    inputRange: [0, 1],
+                    outputRange: [0, -Math.PI / 4],
+                  }),
+                },
+              ],
+            },
           ]}
         >
           <UnicIcon type="AntDesign" name="plus" size={24} color={theme.colors.accent} />
@@ -124,11 +107,9 @@ const FloatingAction = (props) => {
         {actions.map((action) => (
           <FloatingActionItem
             key={action.name}
-            {...{
-              ...action,
-              animation,
-              reset: () => toggleMenu(),
-            }}
+            transition={transition}
+            toggle={() => toggleMenu()}
+            action={action}
           />
         ))}
         {renderMenuButton()}
@@ -136,6 +117,9 @@ const FloatingAction = (props) => {
     </View>
   );
 };
+
+const BT_PRIMARY = 60;
+const BT_SECONDARY = 48;
 
 const styles = StyleSheet.create({
   overlay: {
@@ -161,37 +145,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  androidShadow: {
-    elevation: 5,
-  },
-  iosShadow: {
+  shadow: {
     shadowColor: '#000',
     shadowOffset: { height: 10, width: 5 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
+    elevation: 5,
   },
-  menu: (theme) => ({
+  menu: {
     width: BT_PRIMARY,
     height: BT_PRIMARY,
     borderRadius: BT_PRIMARY / 2,
-    backgroundColor: theme.colors.primary,
-  }),
-  secondary: (theme) => ({
+  },
+  secondary: {
     marginBottom: (BT_PRIMARY - BT_SECONDARY) / 2,
     marginRight: (BT_PRIMARY - BT_SECONDARY) / 2,
     width: BT_SECONDARY,
     height: BT_SECONDARY,
     borderRadius: BT_SECONDARY / 2,
-    backgroundColor: theme.colors.accent,
-  }),
-  textContainer: (theme) => ({
+  },
+  textContainer: {
     position: 'absolute',
     paddingHorizontal: 8,
     borderRadius: 8 / 2,
     height: 22,
     marginRight: 70,
-    backgroundColor: theme.colors.border,
-  }),
+  },
   text: {
     fontSize: 14,
     lineHeight: 20,

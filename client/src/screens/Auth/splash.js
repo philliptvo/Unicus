@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Image, Text, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import * as Animatable from 'react-native-animatable';
+import Animated from 'react-native-reanimated';
 
-import logo from '../../assets/logo.png';
+import logoIcon from '../../assets/logo_icon.png';
 
 import ButtonText from '../../components/buttonText';
 
@@ -13,24 +13,22 @@ const SplashScreen = ({ navigation }) => {
   return (
     <View style={[styles.backgroundContainer, { backgroundColor: theme.colors.primary }]}>
       <View style={styles.header}>
-        <Animatable.Image
-          animation="bounceIn"
-          duration={1500}
-          source={logo}
-          style={styles.logo}
-          resizeMode="stretch"
-        />
+        <Image source={logoIcon} style={styles.logo} resizeMode="stretch" />
       </View>
 
-      <Animatable.View
-        style={[styles.footer, { backgroundColor: theme.colors.surface }]}
-        animation="fadeInUp"
-      >
-        <Text style={[styles.textFooter, { color: theme.colors.primary }]}>Get Hoarding!</Text>
+      <Animated.View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
+        <View style={{ flex: 1 }}>
+          <Text style={[styles.textTitle, { color: theme.colors.text }]}>Let's Get Started!</Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={[styles.textSubtitle, { color: theme.colors.text }]}>
+            Start tracking your hoarding with an account now.
+          </Text>
+        </View>
 
         <ButtonText
           buttonStyles={styles.button}
-          buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.accent }]}
+          buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.primary }]}
           handlePress={() => navigation.navigate('Register')}
           label="Register"
           textStyles={styles.buttonText}
@@ -38,15 +36,12 @@ const SplashScreen = ({ navigation }) => {
 
         <ButtonText
           buttonStyles={styles.button}
-          buttonActionStyles={[
-            styles.buttonAction,
-            { borderColor: theme.colors.accent, borderWidth: 1, marginTop: 30 },
-          ]}
+          buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.accent }]}
           handlePress={() => navigation.navigate('Login')}
           label="Login"
-          textStyles={[styles.buttonText, { color: theme.colors.accent }]}
+          textStyles={[styles.buttonText, { color: theme.colors.text }]}
         />
-      </Animatable.View>
+      </Animated.View>
     </View>
   );
 };
@@ -56,24 +51,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 3,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   footer: {
-    flex: 1,
+    flex: 0.5,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingVertical: 50,
     paddingHorizontal: 30,
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 250,
+    height: 250,
   },
-  textFooter: {
+  textTitle: {
     fontSize: 25,
     fontWeight: 'bold',
+  },
+  textSubtitle: {
+    fontSize: 15,
   },
   buttonText: {
     color: 'white',

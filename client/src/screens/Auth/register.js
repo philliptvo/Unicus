@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import * as Animatable from 'react-native-animatable';
+import Animated from 'react-native-reanimated';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
@@ -45,7 +45,7 @@ const RegisterScreen = ({ navigation }) => {
       await axios.post('/auth/register', newUser);
       navigation.navigate('Login');
     } catch (err) {
-      alert(`Register failed with error: ${err.message}`);
+      alert('Registration failed');
     }
   };
 
@@ -58,7 +58,7 @@ const RegisterScreen = ({ navigation }) => {
       <View style={styles.header}>
         <Text style={styles.textHeader}>Register!</Text>
       </View>
-      <Animatable.View
+      <Animated.View
         style={[styles.footer, { backgroundColor: theme.colors.surface }]}
         animation="fadeInUp"
       >
@@ -76,13 +76,13 @@ const RegisterScreen = ({ navigation }) => {
 
           <ButtonText
             buttonStyles={styles.button}
-            buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.accent }]}
+            buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.primary }]}
             handlePress={handleSubmit(onSubmit)}
             label="Register"
             textStyles={styles.buttonText}
           />
         </StaticForm>
-      </Animatable.View>
+      </Animated.View>
     </KeyboardAvoidingView>
   );
 };

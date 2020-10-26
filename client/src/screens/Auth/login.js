@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import * as Animatable from 'react-native-animatable';
+import Animated from 'react-native-reanimated';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
@@ -46,7 +46,7 @@ const LoginScreen = () => {
         user,
       });
     } catch (err) {
-      alert(`Login failed with error: ${err.message}`);
+      alert(`Incorrect username or passport`);
     }
   };
 
@@ -55,10 +55,7 @@ const LoginScreen = () => {
       <View style={styles.header}>
         <Text style={styles.textHeader}>Unicus</Text>
       </View>
-      <Animatable.View
-        style={[styles.footer, { backgroundColor: theme.colors.surface }]}
-        animation="fadeInUp"
-      >
+      <Animated.View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
         <StaticForm {...{ control, errors }}>
           <TextField name="email" label="Email" autoCapitalize="none" />
           <TextField name="password" label="Password" secureTextEntry autoCapitalize="none" />
@@ -69,13 +66,13 @@ const LoginScreen = () => {
 
           <ButtonText
             buttonStyles={styles.button}
-            buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.accent }]}
+            buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.primary }]}
             handlePress={handleSubmit(onSubmit)}
             label="Login"
             textStyles={styles.buttonText}
           />
         </StaticForm>
-      </Animatable.View>
+      </Animated.View>
     </View>
   );
 };

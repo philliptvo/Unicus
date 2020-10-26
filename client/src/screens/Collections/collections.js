@@ -25,7 +25,7 @@ const CollectionsScreen = ({ navigation }) => {
       }),
       name: 'bt_collection',
       position: 0,
-      action: () => {
+      onPress: () => {
         navigation.navigate('Form', { title: 'Collection', onSubmit: submitCollectionHandler });
       },
     },
@@ -39,8 +39,8 @@ const CollectionsScreen = ({ navigation }) => {
       }),
       name: 'bt_item',
       position: 1,
-      action: () => {
-        navigation.navigate('Form', { title: 'Item' });
+      onPress: () => {
+        alert('TODO: implement new item screen');
       },
     },
   ];
