@@ -1,4 +1,7 @@
 import { useEffect, useRef } from 'react';
+import Animated from 'react-native-reanimated';
+
+const { Value } = Animated;
 
 const useConst = (initialValue) => {
   const ref = useRef();
@@ -21,4 +24,6 @@ const useUpdateEffect = (effect, dependencies) => {
   }, [dependencies, effect]);
 };
 
-export { useConst, useUpdateEffect };
+const useValue = (value) => useConst(() => new Value(value));
+
+export { useConst, useUpdateEffect, useValue };

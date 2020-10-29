@@ -1,22 +1,50 @@
-import React from 'react';
-import { StyleSheet, Image, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Dimensions, Image, Text, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 
 import logoIcon from '../../assets/logo_icon.png';
 
+import { useTransition } from '../../common/utils/transitions';
 import ButtonText from '../../components/buttonText';
+
+const { interpolate } = Animated;
+
+const { height, width } = Dimensions.get('window');
+const IMAGE_HEIGHT = 250;
+const IMAGE_WIDTH = 250;
 
 const SplashScreen = ({ navigation }) => {
   const theme = useTheme();
+  const [active, setActive] = useState(false);
+
+  const transition = useTransition(active, { duration: 300 });
+  const opacity = interpolate(transition, {
+    inputRange: [0, 1],
+    outputRange: [0.5, 1],
+  });
+  const translateY = interpolate(transition, {
+    inputRange: [0, 1],
+    outputRange: [100, 0],
+  });
+
+  useEffect(() => {
+    setTimeout(() => setActive(true), 100);
+  }, []);
 
   return (
-    <View style={[styles.backgroundContainer, { backgroundColor: theme.colors.primary }]}>
-      <View style={styles.header}>
-        <Image source={logoIcon} style={styles.logo} resizeMode="stretch" />
-      </View>
-
-      <Animated.View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
+    <View style={[styles.container, { backgroundColor: theme.colors.primary }]}>
+      <Image source={logoIcon} style={[styles.logo]} resizeMode="contain" />
+      <Animated.View
+        style={[
+          styles.footer,
+          {
+            backgroundColor: theme.colors.surface,
+            opacity,
+            transform: [{ translateY }],
+          },
+        ]}
+      >
         <View style={{ flex: 1 }}>
           <Text style={[styles.textTitle, { color: theme.colors.text }]}>Let's Get Started!</Text>
         </View>
@@ -27,19 +55,15 @@ const SplashScreen = ({ navigation }) => {
         </View>
 
         <ButtonText
-          buttonStyles={styles.button}
-          buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.primary }]}
           handlePress={() => navigation.navigate('Register')}
           label="Register"
-          textStyles={styles.buttonText}
+          textStyles={styles.buttonLabel}
         />
 
         <ButtonText
-          buttonStyles={styles.button}
-          buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.accent }]}
+          buttonActionStyles={{ backgroundColor: theme.colors.accent }}
           handlePress={() => navigation.navigate('Login')}
           label="Login"
-          textStyles={[styles.buttonText, { color: theme.colors.text }]}
         />
       </Animated.View>
     </View>
@@ -47,24 +71,23 @@ const SplashScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  backgroundContainer: {
+  container: {
     flex: 1,
   },
-  header: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  logo: {
+    width: IMAGE_WIDTH,
+    height: IMAGE_HEIGHT,
+    marginHorizontal: (width - IMAGE_WIDTH) / 2,
+    marginTop: (height - IMAGE_WIDTH) / 5,
   },
   footer: {
-    flex: 0.5,
+    position: 'absolute',
+    top: height / 2,
+    height: height / 2,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingVertical: 50,
     paddingHorizontal: 30,
-  },
-  logo: {
-    width: 250,
-    height: 250,
   },
   textTitle: {
     fontSize: 25,
@@ -73,19 +96,8 @@ const styles = StyleSheet.create({
   textSubtitle: {
     fontSize: 15,
   },
-  buttonText: {
+  buttonLabel: {
     color: 'white',
-  },
-  button: {
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  buttonAction: {
-    borderRadius: 10,
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

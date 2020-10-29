@@ -12,6 +12,7 @@ import axios from 'axios';
 
 import { useAuthDispatch } from '../../common/contexts/auth';
 import { setAuthToken } from '../../common/utils/auth';
+import KeyboardAvoidingScrollView from '../../components/keyboardAvoidingScrollView';
 import { StaticForm, TextField } from '../../components/Forms';
 import ButtonText from '../../components/buttonText';
 
@@ -51,68 +52,51 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.primary }]}>
+    <KeyboardAvoidingScrollView containerStyle={{ backgroundColor: theme.colors.primary }}>
       <View style={styles.header}>
-        <Text style={styles.textHeader}>Unicus</Text>
+        <Text style={styles.title}>Unicus</Text>
       </View>
-      <Animated.View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
+      <View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
         <StaticForm {...{ control, errors }}>
           <TextField name="email" label="Email" autoCapitalize="none" />
           <TextField name="password" label="Password" secureTextEntry autoCapitalize="none" />
 
-          <TouchableOpacity style={{ marginTop: 15, paddingHorizontal: 30 }}>
+          <TouchableOpacity
+            style={{ marginTop: 15, paddingHorizontal: 30 }}
+            onPress={() => alert('Forgot Password')}
+          >
             <Text style={{ color: theme.colors.text }}>Forgot Password?</Text>
           </TouchableOpacity>
 
           <ButtonText
-            buttonStyles={styles.button}
-            buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.primary }]}
             handlePress={handleSubmit(onSubmit)}
             label="Login"
-            textStyles={styles.buttonText}
+            textStyles={styles.buttonLabel}
           />
         </StaticForm>
-      </Animated.View>
-    </View>
+      </View>
+    </KeyboardAvoidingScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   header: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    paddingBottom: 50,
+    paddingVertical: 75,
   },
   footer: {
-    flex: 3,
+    flex: 1,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingVertical: 50,
-    paddingHorizontal: 30,
+    paddingVertical: 25,
+    paddingHorizontal: 25,
   },
-  textHeader: {
-    alignSelf: 'flex-start',
+  title: {
     paddingLeft: 40,
     fontSize: 40,
     fontWeight: 'bold',
   },
-  button: {
-    justifyContent: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
+  buttonLabel: {
     color: 'white',
-  },
-  buttonAction: {
-    borderRadius: 10,
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

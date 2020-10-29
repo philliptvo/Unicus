@@ -1,13 +1,13 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import Animated from 'react-native-reanimated';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import * as yup from 'yup';
 import axios from 'axios';
 
+import KeyboardAvoidingScrollView from '../../components/keyboardAvoidingScrollView';
 import { StaticForm, TextField } from '../../components/Forms';
 import ButtonText from '../../components/buttonText';
 
@@ -50,18 +50,11 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.container, { backgroundColor: theme.colors.primary }]}
-      behavior={Platform.OS === 'android' ? undefined : 'padding'}
-      enabled
-    >
+    <KeyboardAvoidingScrollView containerStyle={{ backgroundColor: theme.colors.primary }}>
       <View style={styles.header}>
-        <Text style={styles.textHeader}>Register!</Text>
+        <Text style={styles.title}>Register!</Text>
       </View>
-      <Animated.View
-        style={[styles.footer, { backgroundColor: theme.colors.surface }]}
-        animation="fadeInUp"
-      >
+      <View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
         <StaticForm {...{ control, errors }}>
           <TextField name="firstName" label="First Name" />
           <TextField name="lastName" label="Last Name" />
@@ -75,54 +68,34 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <ButtonText
-            buttonStyles={styles.button}
-            buttonActionStyles={[styles.buttonAction, { backgroundColor: theme.colors.primary }]}
             handlePress={handleSubmit(onSubmit)}
             label="Register"
-            textStyles={styles.buttonText}
+            textStyles={styles.buttonLabel}
           />
         </StaticForm>
-      </Animated.View>
-    </KeyboardAvoidingView>
+      </View>
+    </KeyboardAvoidingScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   header: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    paddingBottom: 50,
+    paddingVertical: 75,
   },
   footer: {
-    flex: 4,
+    flex: 1,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingVertical: 30,
-    paddingHorizontal: 30,
+    paddingVertical: 25,
+    paddingHorizontal: 25,
   },
-  textHeader: {
-    alignSelf: 'flex-start',
+  title: {
     paddingLeft: 40,
     fontSize: 40,
     fontWeight: 'bold',
   },
-  button: {
-    justifyContent: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
+  buttonLabel: {
     color: 'white',
-  },
-  buttonAction: {
-    borderRadius: 10,
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

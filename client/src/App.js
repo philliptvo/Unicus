@@ -84,6 +84,8 @@ const CustomDarkTheme = {
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
+    primary: '#ff8800',
+    accent: '#f5f5f5',
   },
 };
 
