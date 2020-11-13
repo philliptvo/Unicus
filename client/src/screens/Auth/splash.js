@@ -6,7 +6,7 @@ import Animated from 'react-native-reanimated';
 import logoIcon from '../../assets/logo_icon.png';
 
 import { useTransition } from '../../common/utils/transitions';
-import ButtonText from '../../components/buttonText';
+import UnicButton from '../../components/unicButton';
 
 const { interpolate } = Animated;
 
@@ -54,13 +54,13 @@ const SplashScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        <ButtonText
+        <UnicButton
           handlePress={() => navigation.navigate('Register')}
           label="Register"
           textStyles={styles.buttonLabel}
         />
 
-        <ButtonText
+        <UnicButton
           buttonActionStyles={{ backgroundColor: theme.colors.accent }}
           handlePress={() => navigation.navigate('Login')}
           label="Login"

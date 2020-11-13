@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import defaultCollection from '../assets/default_collection.png';
@@ -11,23 +11,20 @@ const CollectionIcon = (props) => {
   const theme = useTheme();
 
   return (
-    <View style={{ flex: 1 / nCol }}>
-      <TouchableOpacity
-        style={[styles.action, { flex: 1 / nCol }]}
-        onPress={() => onPress(collection)}
-        onLongPress={() => onLongPress(collection)}
+    <TouchableOpacity
+      style={[styles.action, { flex: 1 / nCol }]}
+      onPress={() => onPress(collection)}
+      onLongPress={() => onLongPress(collection)}
+    >
+      <UnicImage
+        defaultSource={defaultCollection}
+        image={collection.image}
+        style={styles.image}
+        blurRadius={2}
       >
-        {collection.image ? (
-          <UnicImage image={collection.image} blur={1} style={styles.image}>
-            <Text style={[styles.label, { color: theme.colors.accent }]}>{collection.name}</Text>
-          </UnicImage>
-        ) : (
-          <ImageBackground source={defaultCollection} blurRadius={1} style={styles.image}>
-            <Text style={[styles.label, { color: theme.rolors.accent }]}>{collection.name}</Text>
-          </ImageBackground>
-        )}
-      </TouchableOpacity>
-    </View>
+        <Text style={[styles.label, { color: theme.colors.accent }]}>{collection.name}</Text>
+      </UnicImage>
+    </TouchableOpacity>
   );
 };
 
@@ -39,9 +36,9 @@ const styles = StyleSheet.create({
   },
   image: {
     aspectRatio: 1,
+    backgroundColor: '#000',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
   },
   label: {
     fontSize: 25,

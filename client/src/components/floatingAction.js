@@ -1,33 +1,34 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import Animated, { interpolate } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { useTransition } from '../common/utils/transitions';
 
 import UnicIcon from './unicIcon';
 
+const { interpolate } = Animated;
+
 const FloatingActionItem = (props) => {
   const { action, transition, toggle } = props;
   const theme = useTheme();
+
+  const opacity = interpolate(transition, {
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, 0, 1],
+  });
+  const scale = transition;
+  const translateY = interpolate(transition, {
+    inputRange: [0, 1],
+    outputRange: [0, -80 - 60 * action.position],
+  });
 
   return (
     <Animated.View
       style={[
         styles.actionContainer,
         {
-          opacity: interpolate(transition, {
-            inputRange: [0, 0.5, 1],
-            outputRange: [0, 0, 1],
-          }),
-          transform: [
-            { scale: transition },
-            {
-              translateY: interpolate(transition, {
-                inputRange: [0, 1],
-                outputRange: [0, -80 - 60 * action.position],
-              }),
-            },
-          ],
+          opacity,
+          transform: [{ scale }, { translateY }],
         },
       ]}
     >
@@ -60,7 +61,12 @@ const FloatingAction = (props) => {
 
   const theme = useTheme();
   const [active, setActive] = useState(false);
+
   const transition = useTransition(active, { duration: 200 });
+  const rotate = interpolate(transition, {
+    inputRange: [0, 1],
+    outputRange: [0, -Math.PI / 4],
+  });
 
   const toggleMenu = () => {
     setActive(!active);
@@ -83,14 +89,7 @@ const FloatingAction = (props) => {
             styles.shadow,
             {
               backgroundColor: theme.colors.primary,
-              transform: [
-                {
-                  rotate: interpolate(transition, {
-                    inputRange: [0, 1],
-                    outputRange: [0, -Math.PI / 4],
-                  }),
-                },
-              ],
+              transform: [{ rotate }],
             },
           ]}
         >

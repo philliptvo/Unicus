@@ -14,7 +14,7 @@ import { useAuthDispatch } from '../../common/contexts/auth';
 import { setAuthToken } from '../../common/utils/auth';
 import KeyboardAvoidingScrollView from '../../components/keyboardAvoidingScrollView';
 import { StaticForm, TextField } from '../../components/Forms';
-import ButtonText from '../../components/buttonText';
+import UnicButton from '../../components/unicButton';
 
 const loginSchema = yup.object({
   email: yup
@@ -68,7 +68,7 @@ const LoginScreen = () => {
             <Text style={{ color: theme.colors.text }}>Forgot Password?</Text>
           </TouchableOpacity>
 
-          <ButtonText
+          <UnicButton
             handlePress={handleSubmit(onSubmit)}
             label="Login"
             textStyles={styles.buttonLabel}

@@ -1,12 +1,14 @@
 import React from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import StaticForm from './staticForm';
 import { TextField, ImageField } from './staticFields';
-import ButtonText from '../buttonText';
+import UnicButton from '../unicButton';
 import DynaField from './dynaField';
+
+import KeyboardAvoidingScrollView from '../keyboardAvoidingScrollView';
 
 const CollectionForm = (props) => {
   const theme = useTheme();
@@ -19,52 +21,40 @@ const CollectionForm = (props) => {
   });
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, flexDirection: 'column' }}
-      behavior={Platform.OS === 'android' ? undefined : 'padding'}
+    <KeyboardAvoidingScrollView
+      containerStyle={{ backgroundColor: theme.colors.surface }}
+      innerStyle={{ padding: 20 }}
     >
-      <ScrollView style={{ padding: 20 }}>
-        <StaticForm {...{ control, errors }}>
-          <TextField
-            label="Collection Name"
-            name="name"
-            placeholder="Collection"
-            rules={{ required: 'You must provide a name for the collection.' }}
-          />
-          <ImageField label="Collection Image" name="image" defaultValue={{}} size={150} />
-        </StaticForm>
-
-        {fields.map(({ id }, index) => {
-          return (
-            <View key={id} style={styles.fieldContainer}>
-              <DynaField control={control} index={index} remove={remove} />
-            </View>
-          );
-        })}
-
-        <ButtonText
-          buttonActionStyles={{ backgroundColor: theme.colors.border }}
-          handlePress={() => append({})}
-          label="+ Add Field"
+      <StaticForm {...{ control, errors }}>
+        <TextField
+          label="Collection Name"
+          name="name"
+          placeholder="Collection"
+          rules={{ required: 'You must provide a name for the collection.' }}
         />
+        <ImageField label="Collection Image" name="image" defaultValue={{}} size={150} />
+      </StaticForm>
 
-        <View style={{ flexDirection: 'row', marginBottom: 40 }}>
-          <ButtonText
-            buttonActionStyles={{ borderColor: theme.colors.accent, borderWidth: 1 }}
-            handlePress={onCancel}
-            label="Cancel"
-            textStyles={styles.text}
-          />
+      {fields.map(({ id }, index) => {
+        return (
+          <View key={id} style={styles.fieldContainer}>
+            <DynaField control={control} index={index} remove={remove} />
+          </View>
+        );
+      })}
 
-          <ButtonText
-            buttonActionStyles={{ backgroundColor: theme.colors.accent }}
-            handlePress={handleSubmit(onSubmit)}
-            label="Create"
-            textStyles={styles.text}
-          />
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      <UnicButton
+        buttonActionStyles={{ backgroundColor: theme.colors.border }}
+        handlePress={() => append({})}
+        label="+ Add Field"
+      />
+
+      <View style={{ flex: 1, flexDirection: 'row', marginTop: 15 }}>
+        <UnicButton border handlePress={onCancel} label="Cancel" textStyles={styles.text} />
+
+        <UnicButton handlePress={handleSubmit(onSubmit)} label="Create" textStyles={styles.text} />
+      </View>
+    </KeyboardAvoidingScrollView>
   );
 };
 
@@ -78,7 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
     padding: 20,
-    borderRadius: 5,
+    borderRadius: 25,
     borderWidth: 1,
   },
   input: {

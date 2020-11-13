@@ -12,14 +12,16 @@ import {
 const Stack = createStackNavigator();
 
 const CollectionsNavigator = () => {
+  const header = ({ scene, previous, navigation }) => (
+    <NavigationHeader scene={scene} previous={previous} navigation={navigation} />
+  );
+
   return (
     <>
       <Stack.Navigator
         initialRouteName="My Collections"
         screenOptions={{
-          header: ({ scene, previous, navigation }) => (
-            <NavigationHeader scene={scene} previous={previous} navigation={navigation} />
-          ),
+          header,
         }}
       >
         <Stack.Screen
@@ -27,7 +29,13 @@ const CollectionsNavigator = () => {
           component={CollectionsScreen}
           options={{ enableFeatures: ['search', 'filter'] }}
         />
-        <Stack.Screen name="Collection" component={CollectionScreen} />
+        <Stack.Screen
+          name="Collection"
+          component={CollectionScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen name="Item" component={ItemScreen} />
         <Stack.Screen
           name="Form"

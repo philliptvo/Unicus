@@ -21,7 +21,7 @@ const SettingsScreen = ({ navigation }) => {
     <TouchableOpacity onPress={() => navigation.push('EditProfile')}>
       <View style={styles.userRow}>
         <View style={styles.userImage}>
-          <UnicAvatar {...(userProfile && { image: userProfile })} size={50} />
+          <UnicAvatar image={userProfile} size={50} />
         </View>
         <View>
           <Title>{`${userFirstName} ${userLastName}`}</Title>

@@ -9,7 +9,7 @@ import { useAuthState, useAuthDispatch } from '../../common/contexts/auth';
 import { objectToFormData } from '../../common/utils/formdata';
 import { StaticForm, TextField } from '../../components/Forms';
 import Loader from '../../components/loader';
-import ButtonText from '../../components/buttonText';
+import UnicButton from '../../components/unicButton';
 import ImageInput from '../../components/imageInput';
 
 const EditProfileScreen = ({ navigation }) => {
@@ -75,7 +75,7 @@ const EditProfileScreen = ({ navigation }) => {
         <TextField name="lastName" label="Last Name" defaultValue={userLastName} />
         <TextField name="email" label="Email" autoCapitalize="none" defaultValue={userEmail} />
 
-        <ButtonText
+        <UnicButton
           buttonStyles={styles.button}
           buttonActionStyles={[{ backgroundColor: theme.colors.accent }]}
           handlePress={handleSubmit(profileChangeHandler)}

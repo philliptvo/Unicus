@@ -56,8 +56,7 @@ const CollectionsScreen = ({ navigation }) => {
 
   const pressCollectionHandler = (collection) => {
     // TODO: navigate to collection screen
-    // navigation.navigate('Collection');
-    alert(`Pressed collection: ${collection.name}`);
+    navigation.navigate('Collection', { collection });
   };
 
   const longPressCollectionHandler = (collection) => {

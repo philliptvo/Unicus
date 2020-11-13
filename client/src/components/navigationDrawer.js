@@ -42,7 +42,7 @@ const NavigationDrawer = (props) => {
       <DrawerContentScrollView style={styles.drawerContent}>
         <View style={styles.userInfoSection}>
           <View style={{ flexDirection: 'row', marginTop: 15 }}>
-            <UnicAvatar {...(userProfile && { image: userProfile })} size={50} />
+            <UnicAvatar image={userProfile} size={50} />
             <View style={{ flexDirection: 'column', marginLeft: 15 }}>
               <Title style={styles.title}>{`${userFirstName} ${userLastName}`}</Title>
               <Caption style={styles.caption}>Title: Hoarder</Caption>

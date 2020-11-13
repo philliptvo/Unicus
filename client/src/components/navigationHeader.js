@@ -6,21 +6,24 @@ import logo from '../assets/logo.png';
 
 const NavigationHeader = ({ scene, previous, navigation }) => {
   const theme = useTheme();
+
   const { options } = scene.descriptor;
-  const title = options.headerTitle !== undefined ? options.headerTitle : scene.route.name;
 
   return (
-    <Appbar.Header theme={{ colors: { primary: theme.colors.surface } }}>
+    <Appbar.Header
+      theme={{ ...theme }}
+      style={{ ...(options.headerTransparent && { backgroundColor: 'transparent' }) }}
+    >
       {previous ? (
-        <Appbar.BackAction onPress={() => navigation.pop()} />
+        <Appbar.BackAction color="white" onPress={() => navigation.pop()} />
       ) : (
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Image source={logo} style={styles.logo} />
         </TouchableOpacity>
       )}
       <Appbar.Content
-        title={title}
-        titleStyle={{ fontSize: 18, fontWeight: 'bold', color: theme.colors.primary }}
+        title={options.headerTitle !== undefined ? options.headerTitle : scene.route.name}
+        titleStyle={{ fontSize: 18, fontWeight: 'bold' }}
       />
       {options.enableFeatures?.includes('search') && (
         <Appbar.Action icon="magnify" onPress={() => alert('TODO: Search')} />

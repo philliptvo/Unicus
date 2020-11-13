@@ -9,6 +9,7 @@ const UnicAvatar = (props) => {
 
   return (
     <UnicImage
+      defaultSource="https://api.adorable.io/avatars/50/abott@adorable.png"
       image={image}
       style={{
         height: size,

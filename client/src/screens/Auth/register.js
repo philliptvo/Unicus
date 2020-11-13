@@ -9,7 +9,7 @@ import axios from 'axios';
 
 import KeyboardAvoidingScrollView from '../../components/keyboardAvoidingScrollView';
 import { StaticForm, TextField } from '../../components/Forms';
-import ButtonText from '../../components/buttonText';
+import UnicButton from '../../components/unicButton';
 
 const registerSchema = yup.object({
   firstName: yup.string().required('Required.'),
@@ -67,7 +67,7 @@ const RegisterScreen = ({ navigation }) => {
             autoCapitalize="none"
           />
 
-          <ButtonText
+          <UnicButton
             handlePress={handleSubmit(onSubmit)}
             label="Register"
             textStyles={styles.buttonLabel}
